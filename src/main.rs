@@ -88,7 +88,7 @@ fn main() {
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+    commands.spawn_bundle(Camera2dBundle::default());
     new_game(commands, Difficulty::Easy);
 }
 
@@ -218,6 +218,7 @@ fn draw_grid_shown(
             CardSuit::Hearts | CardSuit::Diamonds => Color::RED,
             CardSuit::Clubs | CardSuit::Spades => Color::BLACK,
         };
+        let font_size = 20.0;
         commands
             .entity(e)
             .insert_bundle(SpriteBundle {
@@ -234,14 +235,13 @@ fn draw_grid_shown(
             })
             .with_children(|parent| {
                 parent.spawn_bundle(Text2dBundle {
-                    text: Text::with_section(
+                    text: Text::from_section(
                         card.card.value.as_str(),
                         TextStyle {
                             font: assets.load("fonts/arial.ttf"),
-                            font_size: 20.0,
+                            font_size,
                             color,
                         },
-                        Default::default(),
                     ),
                     transform: Transform::from_xyz(
                         CARD_SIZE / -2.0,
@@ -251,14 +251,13 @@ fn draw_grid_shown(
                     ..Default::default()
                 });
                 parent.spawn_bundle(Text2dBundle {
-                    text: Text::with_section(
+                    text: Text::from_section(
                         card.card.suit.as_str(),
                         TextStyle {
                             font: assets.load("fonts/arial.ttf"),
-                            font_size: 20.0,
+                            font_size,
                             color,
                         },
-                        Default::default(),
                     ),
                     transform: Transform::from_xyz(
                         CARD_SIZE / 2.0 - 20.0,
